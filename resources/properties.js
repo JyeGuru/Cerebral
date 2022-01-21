@@ -10,9 +10,9 @@ export default {
     'eve_sso_v2_url': 'https://login.eveonline.com/v2/oauth',
     'eve_sso_url_v2_no_oauth': 'https://login.eveonline.com/v2',
 
-    'eve_sso_client_id': 'c9fde897cdfb45208fb5254e3ee98d19',
+    'eve_sso_client_id': 'dc05c6dec89143fcb4507aea0a4252b0',
 
-    'eve_sso_redirect_uri': 'https://localhost/callback',
+    'eve_sso_redirect_uri': 'https://jyeguru.github.io/Cerebral/web/postlogin.html',
     
     'protocol_handler': 'eve-cerebral',
 

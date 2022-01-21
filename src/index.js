@@ -1,6 +1,6 @@
 'use strict';
 
-import {app, BrowserWindow, Tray, Menu, shell} from 'electron';
+import {app, BrowserWindow, Tray, Menu, shell, dialog} from 'electron';
 import path from 'path';
 import log from 'electron-log';
 
@@ -31,11 +31,48 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
     if (mainWindow) {
         mainWindow.show();
     }
+
+    protocolHandler(commandLine);
 });
+
+app.on('load-url', (event, url) => {
+    protocolHandler(url);
+});
+
+function protocolHandler (commandLine) {
+    if (process.platform == 'win32') {
+        // Keep only command line / deep linked arguments
+        commandLine = commandLine.slice(1)
+    }
+    let deeplink = new URL(commandLine);
+
+    if (deeplink.hostname == 'exit') {
+        app.quit();
+    }
+    
+    if (deeplink.hostname == 'auth') {
+        let code = deeplink.searchParams.get('code')
+        let error = deeplink.searchParams.get('error')
+
+        if (code) {
+            mainWindow.webContents.send('code-response', code);
+        }
+
+        if (error) {
+            console.log(dialog.showMessageBox(null, {
+                type: "error",
+                title: "Auth Failure",
+                message: "Failed to authorize your character, please try again."
+            } ));
+        }
+    }
+}
 
 if (!lockObtained) {
     app.quit();
 }
+
+app.setAsDefaultProtocolClient(appProperties.protocol_handler);
 
 const createWindow = async () => {
     mainWindow = new BrowserWindow({

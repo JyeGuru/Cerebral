@@ -14,6 +14,8 @@ export default {
 
     'eve_sso_redirect_uri': 'https://localhost/callback',
     
+    'protocol_handler': 'eve-cerebral',
+
     'scopes': [
         {
             'name': 'esi-location.read_location.v1',

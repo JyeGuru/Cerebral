@@ -24,7 +24,7 @@ export default class SsoClientv2 {
     redirect(scopes, codeChallenge) {
         return this.constructUrl('authorize', {
             response_type: 'code',
-            redirect_uri: 'https://localhost/callback',
+            redirect_uri: appProperties.eve_sso_redirect_uri,
             client_id: this.clientId,
             scope: scopes.join(' '),
             code_challenge: codeChallenge.challenge,

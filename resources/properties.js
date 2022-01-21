@@ -12,6 +12,8 @@ export default {
 
     'eve_sso_client_id': 'c9fde897cdfb45208fb5254e3ee98d19',
 
+    'eve_sso_redirect_uri': 'https://localhost/callback',
+    
     'scopes': [
         {
             'name': 'esi-location.read_location.v1',

@@ -9,45 +9,39 @@
   "keywords": [],
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "eslint --cache --color --ext .jsx,.js src"
+    "lint": "eslint --cache --color --ext .jsx,.js src",
+    "pack": "electron-builder -w --dir",
+    "dist": "electron-builder -w"
   },
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "npm",
-        "icon": "resources/icon.ico",
-        "ignore": [
-          ".idea"
-        ]
-      },
-      "electronWinstallerConfig": {
-        "name": "eve_cerebral",
-        "icon": "resources/icon.ico",
-        "setupIcon": "resources/icon.ico",
-        "loadingGif": "resources/installing.gif"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "EVE Cerebral"
-      }
+  "postinstall": "electron-builder install-app-deps",
+  "build": {
+    "appId": "com.electron.eve-cerebral",
+    "productName": "EVE Cerebral",
+    "win": {
+      "icon": "resources/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "7z",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     }
   },
   "dependencies": {
@@ -74,7 +68,7 @@
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.3",
+    "electron-builder": "^22.14.5",
     "electron-prebuilt-compile": "4.0.0",
     "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",

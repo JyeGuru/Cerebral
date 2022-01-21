@@ -3,3 +3,4 @@ out
 .eslintcache
 .idea
 winston.log
+dist/

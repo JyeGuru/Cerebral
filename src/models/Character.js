@@ -198,13 +198,15 @@ class Character {
         }
 
         // if they have any skills starting >24 hours in the future with a scheduled finish date, must be omega
+        /* No longer relevant, alpha characters have access to the skill queue now
         if (this.skills.find(o =>
                 (new Date(o.start_date).getTime()) > (new Date().getTime() + 24 * 60 * 60) &&
                 o.hasOwnProperty('finish_date')
             ) !== undefined) {
             return true;
         }
-
+        */
+       
         // no definitive answer
         return undefined;
     }

@@ -96,8 +96,7 @@ export default class EsiClient {
     constructUrl(endpoint, version) {
         let baseUrl = EsiClient.trimSlashes(this.esiBaseUrl);
         let trimmedEndpoint = EsiClient.trimSlashes(endpoint);
-        //let trimmedVersion = EsiClient.trimSlashes(version);
-        let trimmedVersion = ''; // Fix broken refreshes
+        let trimmedVersion = EsiClient.trimSlashes(version);
 
         return (trimmedVersion !== '') ?
             baseUrl + '/' + trimmedVersion + '/' + trimmedEndpoint  + '/':

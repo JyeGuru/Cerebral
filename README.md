@@ -1,6 +1,6 @@
 # Cerebral
 
-[![version](https://img.shields.io/github/v/release/jyeguru/cerebral.svg)](https://github.com/PrometheusSatyen/Cerebral/releases) 
+[![version](https://img.shields.io/github/v/release/jyeguru/cerebral.svg)](https://github.com/JyeGuru/Cerebral/releases) 
 [![build status](https://github.com/JyeGuru/Cerebral/actions/workflows/build.yml/badge.svg)](https://github.com/JyeGuru/Cerebral/actions/workflows/build.yml)
 [![license: AGPL v3](https://img.shields.io/badge/license-AGPL%20v3-red.svg)](https://www.gnu.org/licenses/agpl-3.0)
 

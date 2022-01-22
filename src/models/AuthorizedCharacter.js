@@ -168,6 +168,13 @@ class AuthorizedCharacter {
         }
     }
 
+    delete() {
+        if (authorizedCharacters !== undefined) {
+            authorizedCharacters[this.id] = undefined;
+            authorizedCharactersStore.set('authorizedCharacters', authorizedCharacters);
+        }
+    }
+
     save() {
         if (authorizedCharacters !== undefined) {
             authorizedCharacters[this.id] = this;

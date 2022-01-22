@@ -1073,6 +1073,18 @@ class Character {
         }
     }
 
+    delete() {
+        if (characters !== undefined) {
+            characters[this.id] = undefined;
+
+            if (charactersSaveTimeout !== undefined) {
+                clearTimeout(charactersSaveTimeout);
+            }
+
+            charactersStore.set('characters', characters);
+        }
+    }
+
     save() {
         if (characters !== undefined) {
             characters[this.id] = this;

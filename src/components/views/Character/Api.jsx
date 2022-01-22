@@ -1,13 +1,16 @@
 'use strict';
 
 import React from 'react';
+import { Redirect } from 'react-router';
 
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import {red500, greenA200} from 'material-ui/styles/colors';
 
 import CharacterModel from '../../../models/Character';
 import AuthorizedCharacter from '../../../models/AuthorizedCharacter';
+import CharacterHelper from '../../../helpers/CharacterHelper';
 import DateTimeHelper from '../../../helpers/DateTimeHelper';
 
 const styles = {
@@ -26,9 +29,26 @@ const styles = {
 export default class Api extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            goHome: false
+        }
+    }
+
+    handleDelete(e, characterId) {
+        this.setState({goHome: true})
+ 
+        CharacterHelper.deleteCharacter(characterId)
+        // Force hard reload of app to remove cached objects (which cause UI crashes)
+        location.reload(true);
     }
 
     render() {
+        const { goHome } = this.state
+
+        if (goHome) {
+            return <Redirect to="/" push={true} />
+        }
+
         const char = CharacterModel.get(this.props.characterId);
         const auth = AuthorizedCharacter.get(this.props.characterId);
         const authStatus = (auth.lastRefresh.success !== false) || (auth.lastRefresh.shouldRetry !== false);
@@ -87,6 +107,12 @@ export default class Api extends React.Component {
                                     </div> :
                                     ''
                             }
+                            <br/>
+                            <RaisedButton label="Remove Character"
+                                        backgroundColor="#b56a60"
+                                        style={styles.button}
+                                        icon={<FontIcon className="material-icons">delete</FontIcon>}
+                                        onClick={e => this.handleDelete(e, this.props.characterId)}/>
                         </CardText>
                     </Card>
 

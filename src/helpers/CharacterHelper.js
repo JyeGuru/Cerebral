@@ -4,6 +4,8 @@ import { ipcRenderer, shell } from 'electron';
 
 import SsoClientv2 from './eve/SsoClientv2';
 import Character from '../models/Character';
+import AuthorizedCharacter from '../models/AuthorizedCharacter';
+import FarmHelper from './FarmHelper';
 
 import StructureHelper from './StructureHelper';
 
@@ -31,5 +33,17 @@ export default class CharacterHelper {
             Character.build();
         });
         shell.openExternal(redirect)
+    }
+
+    static deleteCharacter(characterId) {
+        let authchar = AuthorizedCharacter.get(characterId)
+        if (authchar) {
+            authchar.delete();
+        }
+        let char = Character.get(characterId)
+        if (char) {
+            char.delete();
+        }
+        FarmHelper.deleteFarm(characterId)
     }
 }

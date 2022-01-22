@@ -44,6 +44,17 @@ export default class CharactersOverviewTable extends React.Component {
         });
     }
 
+    renderQueueEnd(char)
+    {
+        const currentSkill = char.getCurrentSkill();
+        const finishDate = currentSkill !== undefined ? char.getLastSkill().finish_date : undefined
+        const warnQueue = finishDate !== undefined ? (new Date(finishDate) < new Date(Date.now() + ( 2 * 24 * 60 * 60 * 1000 ))) : false
+        const queueWarning = "Skill queue ends soon!";
+
+        return (<span>{warnQueue && <span style={{color: red500}} title={queueWarning}>⚠ </span>}{<EveCountdownTimer endDate={new Date(finishDate)} />}</span>);
+    }
+
+
     render() {
         if (this.state.redirectPath !== undefined) {
             this.setState({redirectPath: undefined});
@@ -67,6 +78,8 @@ export default class CharactersOverviewTable extends React.Component {
                                 omegaStatusIconPath = '';
                         }
                         const currentSkill = char.getCurrentSkill();
+                        const finishDate = currentSkill !== undefined ? char.getLastSkill().finish_date : undefined
+                        const warnQueue = finishDate !== undefined ? (new Date(finishDate) < new Date(Date.now() + ( 15 * 24 * 60 * 60 * 1000 ))) : false
                         const auth = AuthorizedCharacter.get(char.id);
 
                         return (
@@ -103,6 +116,11 @@ export default class CharactersOverviewTable extends React.Component {
                                 <TableRowColumn>
                                     {currentSkill !== undefined ? `${currentSkill.skill_name} ${currentSkill.finished_level}` : "Not Training"}<br/>
                                     {currentSkill !== undefined ? <EveCountdownTimer endDate={new Date(currentSkill.finish_date)} /> : ""}
+                                </TableRowColumn>
+
+                                <TableRowColumn>
+                                    {currentSkill !== undefined ? "Queued Training" : ""}<br />
+                                    {currentSkill !== undefined ? this.renderQueueEnd(char) : ""}<br />
                                 </TableRowColumn>
                             </TableRow>
                         );

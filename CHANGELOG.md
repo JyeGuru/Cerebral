@@ -1,3 +1,15 @@
+2022-01-22: 0.9.0
+* Migrated character auth to native browser with protocol handler callback
+    * This removes the security issue of loading the login pages inside the application
+    * Also allows easier adding if already authenticated in native browser
+    * Allows browser-integrated password managers to autofill
+    * Application auth keys have been updated to support the new callback URL
+    * Existing characters will still be present, but the API keys will need to be refreshed
+* Fixed refresh issues caused by out of date API endpoints
+* Added button to delete a character (under API tab)
+* Merged various SP Farming UI updates from https://github.com/TomRichter/Cerebral fork
+* Fix a false positive Omega detection due to recent Skill Queue changes
+
 2019-01-21: 0.8.1
 -------------------------
 * Fixed serious bug where certain characters authorized via the new SSOv2 would show tokens as dying when they were in fact fine.

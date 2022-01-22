@@ -10,8 +10,8 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint --cache --color --ext .jsx,.js src",
-    "pack": "electron-builder -w --dir",
-    "dist": "electron-builder -w"
+    "pack": "electron-builder -w --dir --publish never",
+    "dist": "electron-builder -w --publish never"
   },
   "postinstall": "electron-builder install-app-deps",
   "build": {

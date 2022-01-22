@@ -35,7 +35,13 @@
           ]
         }
       ]
-    }
+    },
+    "publish": [{
+      "provider": "github",
+      "releaseType": "release",
+      "owner": "JyeGuru",
+      "repo": "Cerebral"
+    }]
   },
   "dependencies": {
     "electron-compile": "^6.4.4",

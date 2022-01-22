@@ -1,15 +1,48 @@
-name: Build/release
+# https://wildwolf.name/github-actions-how-to-avoid-running-the-same-workflow-multiple-times/
+name: Build
 
-on: push
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
+  prepare:
 
+    runs-on: ubuntu-latest
+    outputs:
+      head_tag: ${{ steps.check.outputs.head_tag }}
+      foreign_pr: ${{ steps.check.outputs.foreign_pr }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Retrieve tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Set output variables
+        id: check
+        run: |
+          fpr="no"
+          tag=""
+          if [[ "${{ github.ref }}" == refs/heads/* ]]; then
+            tag="$(git tag --points-at HEAD)"
+          elif [[ "${{ github.ref }}" == refs/pull/* ]] && [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.event.pull_request.base.repo.full_name }}" ]; then
+            fpr="yes"
+          fi
+          echo "::set-output name=foreign_pr::${fpr}"
+          echo "::set-output name=head_tag::${tag}"
+
+  build:
+    runs-on: ${{ matrix.os }}
+    needs: prepare
+    if: "(github.event_name == 'push' && needs.prepare.outputs.head_tag == '') || (github.event_name == 'pull_request' && needs.prepare.outputs.foreign_pr == 'yes')"
     strategy:
       matrix:
         os: [windows-latest]
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
@@ -19,13 +52,14 @@ jobs:
         with:
           node-version: 14
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
+      - name: Restore Node packages
+        run: npm ci
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Compile
+        run: npm run dist
+
+      - name: Upload all artifacts
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: Build Artifacts
+          path: "*.*" # Match all files, but not subfolders with unpacked builds

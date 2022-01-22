@@ -3,6 +3,7 @@
 export default {
     'version': '0.8.1',
     'author_email': 'prometheussatyen@gmail.com',
+    'author_email': 'eve-cerebral@jye.wtf',
 
     'eve_sso_url': 'https://login.eveonline.com/oauth',
     'eve_sso_url_no_oauth': 'https://login.eveonline.com',
